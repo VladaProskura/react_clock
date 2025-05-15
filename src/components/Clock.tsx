@@ -26,8 +26,17 @@ export class Clock extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
     if (prevState.time !== this.state.time && this.props.hasClock) {
+      const timeFormatter = new Intl.DateTimeFormat('uk-UA', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'UTC',
+      });
+
+      const formattedTime = timeFormatter.format(this.state.time);
+
       // eslint-disable-next-line no-console
-      console.log(this.state.time.toUTCString().slice(-12, -4));
+      console.log(formattedTime);
     }
 
     if (prevProps.clockName !== this.props.clockName && this.props.hasClock) {
@@ -54,7 +63,14 @@ export class Clock extends React.Component<Props, State> {
 
         {' time is '}
 
-        <span className="Clock__time">{time.toUTCString().slice(-12, -4)}</span>
+        <span className="Clock__time">
+          {new Intl.DateTimeFormat('uk-UA', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZone: 'UTC',
+          }).format(time)}
+        </span>
       </div>
     );
   }
